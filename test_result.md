@@ -103,7 +103,7 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Premium cinematic wedding invitation with RSVP for Maroun & Cynthia (July 27, 2026).
+  Premium cinematic wedding invitation with RSVP for Maroun & Cynthia (July 23, 2026).
   10-slide horizontally swipeable luxury experience. Backend stores RSVPs in MongoDB.
 
 backend:

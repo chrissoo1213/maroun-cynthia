@@ -66,7 +66,7 @@ def test_submit_rsvp():
                 {"name": "Maroun Khoury", "status": "accept"},
                 {"name": "Cynthia Hayek", "status": "accept"}
             ],
-            "message": "So excited to celebrate with you both! Can't wait for July 27th!"
+            "message": "So excited to celebrate with you both! Can't wait for July 23th!"
         }
         
         print(f"Request: POST {url}")

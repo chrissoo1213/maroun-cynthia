@@ -27,7 +27,7 @@ const inter = Inter({
 
 export const metadata = {
   title: 'Maroun & Cynthia — A Wedding Story',
-  description: 'Maroun & Cynthia invite you to celebrate their wedding on July 27, 2026.',
+  description: 'Maroun & Cynthia invite you to celebrate their wedding on July 23, 2026.',
 }
 
 export default function RootLayout({ children }) {

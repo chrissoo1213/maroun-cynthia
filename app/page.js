@@ -304,7 +304,7 @@ function Slide2Countdown() {
           ))}
         </div>
         <p className="mt-10 text-white/80 font-serif italic text-sm md:text-base">
-          July 27, 2026 &middot; Lebanon
+          July 23, 2026 &middot; Lebanon
         </p>
       </motion.div>
     </div>
@@ -508,7 +508,7 @@ function Slide5Ceremony() {
         <GlassEventCard
           kicker="The Ceremony"
           title="Vows"
-          date="Monday, July 27, 2026"
+          date="Monday, July 23, 2026"
           time="18:00 — 19:00"
           venue="Hemlaya"
           city="Lebanon"
@@ -532,7 +532,7 @@ function Slide6Reception() {
         <GlassEventCard
           kicker="The Celebration"
           title="Reception"
-          date="Monday, July 27, 2026"
+          date="Monday, July 23, 2026"
           time="19:30 onwards"
           venue="Blanc De Chêne"
           city="Lebanon"
@@ -740,7 +740,7 @@ function SuccessCelebration({ guests }) {
         {guests.filter((g) => g.status === "accept").length > 0
           ? "you"
           : "you in spirit"}{" "}
-        on July 27, 2026.
+        on July 23, 2026.
       </p>
       <p className="font-hand text-champagne text-2xl mt-8">
         with love, M &amp; C
@@ -937,6 +937,7 @@ function App() {
   const [assetsLoaded, setAssetsLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [musicOn, setMusicOn] = useState(false);
+  const [readyToEnter, setReadyToEnter] = useState(false);
 
   const [guests, setGuests] = useState([]);
   const [guestData, setGuestData] = useState(null);
@@ -1043,6 +1044,7 @@ function App() {
       ]);
 
       setAssetsLoaded(true);
+      setReadyToEnter(true);
     }
 
     preloadAssets();
@@ -1059,12 +1061,6 @@ function App() {
     }
   }, [musicOn]);
 
-  // Auto start music after intro
-  useEffect(() => {
-    if (!introDone) return;
-
-    setMusicOn(true);
-  }, [introDone]);
 
   const slides = useMemo(
     () => [
@@ -1088,10 +1084,10 @@ function App() {
   return (
     <main className="relative h-[100dvh] w-full bg-black overflow-hidden">
       <audio
-        ref={audioRef}
-        src="/wedding/song.mp3"
-        loop
-        preload="metadata"
+          ref={audioRef}
+          src="/wedding/song.mp3"
+          loop
+          preload="auto"
       />
 
       {/* Loading Screen */}
@@ -1110,19 +1106,31 @@ function App() {
       )}
 
       {/* Intro */}
-      <AnimatePresence>
-  {!introDone && (
-    <CinematicIntro
-      key="intro"
-      onDone={() => {
-        if (assetsLoaded) {
-          setIntroDone(true);
-        }
-            }}
-            />
-          )}
-        </AnimatePresence>
+      {readyToEnter && !introDone && (
+  <div className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center">
+    <h1 className="font-script text-champagne text-7xl mb-6">
+      Maroun & Cynthia
+    </h1>
 
+    <p className="text-white/70 mb-8 tracking-luxury uppercase text-xs">
+      Everything is ready
+    </p>
+
+    <button
+      onClick={async () => {
+        try {
+            await audioRef.current?.play();
+            setMusicOn(true);
+            } catch (e) {}
+
+              setIntroDone(true);
+            }}
+            className="px-8 py-4 rounded-full border border-champagne text-champagne hover:bg-champagne hover:text-black transition-all"
+            >
+              Enter Invitation
+            </button>
+          </div>
+        )}
       {/* Website */}
       {introDone && (
         <>
