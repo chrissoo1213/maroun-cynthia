@@ -749,6 +749,8 @@ function SuccessCelebration({ guests }) {
   );
 }
 
+
+
 function SlideRSVP({ guests, setGuests }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -757,35 +759,45 @@ function SlideRSVP({ guests, setGuests }) {
 
   const setStatus = (i, status) => {
     setGuests((prev) =>
-      prev.map((g, idx) => (idx === i ? { ...g, status } : g)),
+      prev.map((g, idx) =>
+        idx === i ? { ...g, status } : g
+      )
     );
   };
 
   const submit = async () => {
     setError("");
+
     if (guests.some((g) => !g.status)) {
       setError("Please respond for each guest.");
       return;
     }
+
     setSubmitting(true);
+
     try {
-      const res = await fetch("/api/rsvp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          invitationId:
-            typeof window !== "undefined"
-              ? new URLSearchParams(window.location.search).get("id") ||
-                "default"
-              : "default",
-          guests,
-          message,
-        }),
-      });
-      if (!res.ok) throw new Error("Submission failed");
+      const params = new URLSearchParams(window.location.search);
+      const rsvpId = params.get("rsvp");
+    
+      const url =
+        "https://script.google.com/macros/s/AKfycbxZz3YRhRjgBG7jDrb5BZQWTsfLedhgBFKLgZ5R5Rn9GehZXOH1xTBXBI0gS1WLpO-vkA/exec" +
+        "?action=submit" +
+        "&id=" + encodeURIComponent(rsvpId) +
+        "&guest1Status=" + encodeURIComponent(guests[0]?.status || "") +
+        "&guest2Status=" + encodeURIComponent(guests[1]?.status || "") +
+        "&note=" + encodeURIComponent(message);
+    
+      const response = await fetch(url);
+      const result = await response.json();
+    
+      if (!result.success) {
+        throw new Error("Failed to save RSVP");
+      }
+    
       setSubmitted(true);
-    } catch (e) {
-      setError(e.message || "Something went wrong.");
+    
+    } catch (err) {
+      setError(err.message || "Something went wrong.");
     } finally {
       setSubmitting(false);
     }
@@ -798,6 +810,7 @@ function SlideRSVP({ guests, setGuests }) {
         interval={8000}
         overlay="rgba(0,0,0,0.7)"
       />
+
       <div className="relative z-10 min-h-full flex flex-col items-center justify-center py-20 px-6">
         <AnimatePresence mode="wait">
           {!submitted ? (
@@ -813,9 +826,11 @@ function SlideRSVP({ guests, setGuests }) {
                 <p className="tracking-luxury text-white/80 text-[11px] uppercase">
                   Kindly Respond
                 </p>
+
                 <h2 className="font-script text-champagne text-5xl md:text-6xl mt-2">
                   RSVP
                 </h2>
+
                 <p className="text-white/80 font-serif italic mt-3 text-sm">
                   Please reply by July 1, 2026
                 </p>
@@ -834,28 +849,30 @@ function SlideRSVP({ guests, setGuests }) {
                     <div className="font-serif text-white text-base md:text-lg flex-1 truncate">
                       {g.name}
                     </div>
+
                     <div className="flex gap-2">
                       <button
-                        onClick={() => setStatus(i, "accept")}
-                        className={`px-4 py-2 rounded-full text-xs tracking-luxury uppercase border transition-all
-                          ${
-                            g.status === "accept"
-                              ? "bg-champagne text-black border-champagne shadow-[0_0_20px_rgba(212,184,150,0.5)]"
-                              : "border-white/40 text-white hover:border-champagne"
-                          }`}
+                        onClick={() => setStatus(i, "Accepted")}
+                        className={`px-4 py-2 rounded-full text-xs tracking-luxury uppercase border transition-all ${
+                          g.status === "Accepted"
+                            ? "bg-champagne text-black border-champagne shadow-[0_0_20px_rgba(212,184,150,0.5)]"
+                            : "border-white/40 text-white hover:border-champagne"
+                        }`}
                       >
-                        <Check size={12} className="inline mr-1" /> Accept
+                        <Check size={12} className="inline mr-1" />
+                        Accept
                       </button>
+
                       <button
-                        onClick={() => setStatus(i, "decline")}
-                        className={`px-4 py-2 rounded-full text-xs tracking-luxury uppercase border transition-all
-                          ${
-                            g.status === "decline"
-                              ? "bg-white/15 text-white border-white/70"
-                              : "border-white/40 text-white hover:border-white/70"
-                          }`}
+                        onClick={() => setStatus(i, "Declined")}
+                        className={`px-4 py-2 rounded-full text-xs tracking-luxury uppercase border transition-all ${
+                          g.status === "Declined"
+                            ? "bg-white/15 text-white border-white/70"
+                            : "border-white/40 text-white hover:border-white/70"
+                        }`}
                       >
-                        <X size={12} className="inline mr-1" /> Decline
+                        <X size={12} className="inline mr-1" />
+                        Decline
                       </button>
                     </div>
                   </motion.div>
@@ -873,7 +890,9 @@ function SlideRSVP({ guests, setGuests }) {
               </div>
 
               {error && (
-                <p className="text-red-300 text-sm text-center mt-3">{error}</p>
+                <p className="text-red-300 text-sm text-center mt-3">
+                  {error}
+                </p>
               )}
 
               <motion.button
@@ -883,7 +902,7 @@ function SlideRSVP({ guests, setGuests }) {
                 className="mt-6 w-full py-4 rounded-full bg-champagne text-black tracking-luxury text-sm uppercase font-medium shadow-[0_10px_40px_rgba(212,184,150,0.35)] disabled:opacity-60 inline-flex items-center justify-center gap-2"
               >
                 {submitting ? (
-                  "Sending…"
+                  "Sending..."
                 ) : (
                   <>
                     Send Response <Send size={14} />
@@ -915,29 +934,124 @@ function ProgressDots({ total, current }) {
 
 function App() {
   const [introDone, setIntroDone] = useState(false);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [musicOn, setMusicOn] = useState(false);
-  const [guests, setGuests] = useState([
-    { name: "Guest 1", status: null },
-    { name: "Guest 2", status: null },
-  ]);
+
+  const [guests, setGuests] = useState([]);
+  const [guestData, setGuestData] = useState(null);
+
   const audioRef = useRef(null);
 
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    const names = params.get("names") || params.get("guests");
-    if (names) {
-      const list = names
-        .split(",")
-        .map((n) => ({ name: decodeURIComponent(n.trim()), status: null }))
-        .filter((g) => g.name);
-      if (list.length) setGuests(list);
-    }
+    const audio = new Audio("/wedding/song.mp3");
+    audio.preload = "auto";
+    audio.load();
   }, []);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("rsvp");
+  
+    if (!id) return;
+  
+    fetch(
+      "https://script.google.com/macros/s/AKfycbxZz3YRhRjgBG7jDrb5BZQWTsfLedhgBFKLgZ5R5Rn9GehZXOH1xTBXBI0gS1WLpO-vkA/exec?id=" +
+        id
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setGuestData(data);
+  
+        const loadedGuests = [];
+  
+        if (data.guest1) {
+          loadedGuests.push({
+            name: data.guest1,
+            status: data.guest1Status || null,
+          });
+        }
+  
+        if (data.guest2) {
+          loadedGuests.push({
+            name: data.guest2,
+            status: data.guest2Status || null,
+          });
+        }
+  
+        setGuests(loadedGuests);
+      })
+      .catch(console.error);
+  }, []);
+
+  // Load guest names from URL
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+
+    const names = params.get("names") || params.get("guests");
+
+    if (names) {
+      const list = names
+        .split(",")
+        .map((n) => ({
+          name: decodeURIComponent(n.trim()),
+          status: null,
+        }))
+        .filter((g) => g.name);
+
+      if (list.length) {
+        setGuests(list);
+      }
+    }
+  }, []);
+
+  // PRELOAD EVERYTHING
+  useEffect(() => {
+    async function preloadAssets() {
+      const imagePromises = PHOTOS.map((src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+
+          img.onload = resolve;
+          img.onerror = resolve;
+
+          img.src = src;
+        });
+      });
+
+      const audioPromise = new Promise((resolve) => {
+        if (!audioRef.current) {
+          resolve();
+          return;
+        }
+
+        audioRef.current.addEventListener(
+          "loadeddata",
+          () => resolve(),
+          { once: true }
+        );
+
+        audioRef.current.load();
+      });
+
+      await Promise.all([
+        ...imagePromises,
+        audioPromise,
+      ]);
+
+      setAssetsLoaded(true);
+    }
+
+    preloadAssets();
+  }, []);
+
+  // Music control
+  useEffect(() => {
     if (!audioRef.current) return;
+
     if (musicOn) {
       audioRef.current.play().catch(() => {});
     } else {
@@ -945,8 +1059,10 @@ function App() {
     }
   }, [musicOn]);
 
+  // Auto start music after intro
   useEffect(() => {
     if (!introDone) return;
+
     setMusicOn(true);
   }, [introDone]);
 
@@ -960,27 +1076,61 @@ function App() {
       <Slide6Reception key="s6" />,
       <Slide8Gift key="s8" />,
       <Slide9Message key="s9" />,
-      <SlideRSVP key="s10" guests={guests} setGuests={setGuests} />,
+      <SlideRSVP
+        key="s10"
+        guests={guests}
+        setGuests={setGuests}
+      />,
     ],
-    [guests],
+    [guests]
   );
 
   return (
     <main className="relative h-[100dvh] w-full bg-black overflow-hidden">
-      <audio ref={audioRef} src="/wedding/song.mp3" loop preload="auto" />
+      <audio
+        ref={audioRef}
+        src="/wedding/song.mp3"
+        loop
+        preload="metadata"
+      />
 
+      {/* Loading Screen */}
+      {!assetsLoaded && (
+        <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="font-script text-champagne text-7xl">
+              M & C
+            </h1>
+
+            <p className="text-white/70 mt-4 tracking-luxury uppercase text-xs">
+              Preparing your invitation...
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Intro */}
       <AnimatePresence>
-        {!introDone && (
-          <CinematicIntro key="intro" onDone={() => setIntroDone(true)} />
-        )}
-      </AnimatePresence>
+  {!introDone && (
+    <CinematicIntro
+      key="intro"
+      onDone={() => {
+        if (assetsLoaded) {
+          setIntroDone(true);
+        }
+            }}
+            />
+          )}
+        </AnimatePresence>
 
+      {/* Website */}
       {introDone && (
         <>
           <MusicToggle
             playing={musicOn}
             onToggle={() => setMusicOn((m) => !m)}
           />
+
           <Swiper
             modules={[
               Mousewheel,
@@ -990,19 +1140,31 @@ function App() {
               HashNavigation,
             ]}
             slidesPerView={1}
-            mousewheel={{ forceToAxis: true, releaseOnEdges: true }}
+            mousewheel={{
+              forceToAxis: true,
+              releaseOnEdges: true,
+            }}
             keyboard={{ enabled: true }}
             speed={900}
-            onSlideChange={(sw) => setActiveIndex(sw.activeIndex)}
+            onSlideChange={(sw) =>
+              setActiveIndex(sw.activeIndex)
+            }
             className="h-full w-full"
           >
             {slides.map((node, i) => (
-              <SwiperSlide key={i} className="h-full w-full">
+              <SwiperSlide
+                key={i}
+                className="h-full w-full"
+              >
                 {node}
               </SwiperSlide>
             ))}
           </Swiper>
-          <ProgressDots total={slides.length} current={activeIndex} />
+
+          <ProgressDots
+            total={slides.length}
+            current={activeIndex}
+          />
         </>
       )}
     </main>
