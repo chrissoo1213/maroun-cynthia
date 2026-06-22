@@ -403,12 +403,12 @@ function Slide4Gallery() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,184,150,0.08),transparent_60%)]" />
 
       <div className="relative z-10 h-full w-full">
-        <div className="absolute top-10 left-0 right-0 text-center px-6">
+      <div className="absolute top-2 left-0 right-0 text-center z-50">
           <p className="tracking-luxury text-white/80 text-[11px] uppercase">
             Memories
           </p>
-          <h2 className="font-script text-champagne text-5xl md:text-7xl mt-2">
-            Moments of us
+          <h2 className="relative z-50 font-script text-champagne text-4xl md:text-7xl mt-2 text-center">
+              Moments of us
           </h2>
         </div>
 
@@ -839,39 +839,39 @@ function SlideRSVP({ guests, setGuests }) {
               <div className="space-y-3">
                 {guests.map((g, i) => (
                   <motion.div
-                    key={g.name + i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="glass rounded-2xl p-4 flex items-center justify-between gap-3"
-                  >
-                    <div className="font-serif text-white text-base md:text-lg flex-1 truncate">
-                      {g.name}
-                    </div>
+                  key={g.name + i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass rounded-2xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3"
+                >
+                    <div className="font-serif text-white text-base md:text-lg text-center sm:text-left">
+                         {g.name}
+                      </div>
 
                     <div className="flex gap-2">
                       <button
                         onClick={() => setStatus(i, "Accepted")}
-                        className={`px-4 py-2 rounded-full text-xs tracking-luxury uppercase border transition-all ${
+                        className={`px-3 py-1.5 rounded-full text-[10px] tracking-luxury uppercase border transition-all ${
                           g.status === "Accepted"
                             ? "bg-champagne text-black border-champagne shadow-[0_0_20px_rgba(212,184,150,0.5)]"
                             : "border-white/40 text-white hover:border-champagne"
                         }`}
                       >
-                        <Check size={12} className="inline mr-1" />
+                        <Check size={10} className="inline mr-1" />
                         Accept
                       </button>
 
                       <button
                         onClick={() => setStatus(i, "Declined")}
-                        className={`px-4 py-2 rounded-full text-xs tracking-luxury uppercase border transition-all ${
+                        className={`px-3 py-1.5 rounded-full text-[10px] tracking-luxury uppercase border transition-all ${
                           g.status === "Declined"
                             ? "bg-white/15 text-white border-white/70"
                             : "border-white/40 text-white hover:border-white/70"
                         }`}
                       >
-                        <X size={12} className="inline mr-1" />
+                        <X size={10} className="inline mr-1" />
                         Decline
                       </button>
                     </div>
@@ -1108,13 +1108,10 @@ function App() {
       {/* Intro */}
       {readyToEnter && !introDone && (
   <div className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center">
-    <h1 className="font-script text-champagne text-7xl mb-6">
-      Maroun & Cynthia
+    <h1 className="font-script text-champagne text-5xl md:text-7xl mb-6 text-center px-6">
+        Maroun & Cynthia
     </h1>
 
-    <p className="text-white/70 mb-8 tracking-luxury uppercase text-xs">
-      Everything is ready
-    </p>
 
     <button
       onClick={async () => {
