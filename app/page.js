@@ -270,7 +270,7 @@ function Slide1Hero() {
           <p className="tracking-luxury text-white text-xs md:text-sm uppercase">
             are getting married
           </p>
-          <p className="tracking-elegant text-champagne text-sm md:text-base">
+          <p className="tracking-elegant text-champagne text-base sm:text-lg md:text-xl">
             23 . 07 . 2026
           </p>
         </motion.div>
