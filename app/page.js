@@ -33,12 +33,15 @@ import {
 } from "lucide-react";
 
 const PHOTOS = [
-  "/wedding/134A0190.jpg",
-  "/wedding/134A1094.jpg",
-  "/wedding/134A1065.jpg",
-  "/wedding/134A1212.jpg",
-  "/wedding/134A0195.jpg",
-  "/wedding/134A1310.jpg",
+  "/wedding/1.jpg",
+  "/wedding/3.jpg",
+  "/wedding/4.jpg",
+  "/wedding/5.jpg",
+  "/wedding/6.jpg",
+  "/wedding/7.jpg",
+  "/wedding/8.jpg",
+  "/wedding/9.jpg",
+  "/wedding/10.jpg",
 ];
 
 const WEDDING_DATE = new Date("2026-07-23T15:00:00+03:00");
@@ -46,7 +49,7 @@ const WEDDING_DATE = new Date("2026-07-23T15:00:00+03:00");
 function BackgroundSlideshow({
   photos = PHOTOS,
   interval = 4000,
-  
+  overlay = "rgba(0,0,0,0.28)",
 }) {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
@@ -72,12 +75,13 @@ function BackgroundSlideshow({
               backgroundImage: `url(${src})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
+              filter: "brightness(1.12) saturate(1.08)",
             }}
           />
         </motion.div>
       ))}
       <div className="absolute inset-0" style={{ background: overlay }} />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/35" />
     </div>
   );
 }
@@ -190,7 +194,7 @@ function CinematicIntro({ onDone }) {
                 backgroundPosition: "center",
               }}
             />
-            <div className="absolute inset-0 bg-black/55" />
+            <div className="absolute inset-0 bg-black/25" />
           </motion.div>
         </motion.div>
       )}
@@ -199,6 +203,14 @@ function CinematicIntro({ onDone }) {
 }
 
 function Slide1Hero() {
+  const { d, h, m, s } = useCountdown(WEDDING_DATE);
+  const countdownItems = [
+    { value: d, label: "Days" },
+    { value: h, label: "Hours" },
+    { value: m, label: "Minutes" },
+    { value: s, label: "Seconds" },
+  ];
+
   return (
     <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
       <BackgroundSlideshow />
@@ -233,6 +245,26 @@ function Slide1Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 2.2 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-3"
+        >
+          {countdownItems.map((item) => (
+            <div
+              key={item.label}
+              className="min-w-[78px] rounded-2xl border border-white/20 bg-white/10 px-3 py-3 backdrop-blur-sm"
+            >
+              <div className="font-serif text-lg sm:text-2xl font-semibold text-white tabular-nums">
+                {String(item.value).padStart(2, "0")}
+              </div>
+              <div className="mt-1 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-champagne/90">
+                {item.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 2.2 }}
           className="mt-8 space-y-2"
         >
           <p className="tracking-luxury text-white text-xs md:text-sm uppercase">
@@ -256,61 +288,46 @@ function Slide1Hero() {
   );
 }
 
-function Slide2Countdown() {
-  const { d, h, m, s } = useCountdown(WEDDING_DATE);
-  const blocks = [
-    { v: d, l: "Days" },
-    { v: h, l: "Hours" },
-    { v: m, l: "Minutes" },
-    { v: s, l: "Seconds" },
-  ];
+function Slide2Invitation() {
   return (
-    <div className="relative h-full w-full flex flex-col items-center justify-center overflow-hidden">
-      <BackgroundSlideshow
-        photos={[PHOTOS[1], PHOTOS[3]]}
-        interval={6000}
-       
-      />
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2 }}
-        viewport={{ once: true }}
-        className="relative z-10 text-center px-6"
-      >
-        <p className="tracking-luxury text-white/80 text-[11px] uppercase mb-3">
-          Counting the moments
-        </p>
-        <h2 className="font-script text-champagne text-5xl md:text-7xl mb-12">
-          Until Forever
-        </h2>
-        <div className="grid grid-cols-4 gap-3 md:gap-6 max-w-xl mx-auto">
-          {blocks.map((b, i) => (
-            <motion.div
-              key={b.l}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.15, duration: 0.9 }}
-              viewport={{ once: true }}
-              className="glass rounded-2xl py-5 md:py-7"
-            >
-              <div className="font-serif text-white text-3xl md:text-5xl font-light tabular-nums">
-                {String(b.v).padStart(2, "0")}
-              </div>
-              <div className="text-[10px] md:text-xs tracking-luxury text-champagne/90 uppercase mt-2">
-                {b.l}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        <p className="mt-10 text-white/80 font-serif italic text-sm md:text-base">
-          July 23, 2026 &middot; Lebanon
-        </p>
-      </motion.div>
+    <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
+      <BackgroundSlideshow photos={[PHOTOS[1], PHOTOS[2]]} interval={7000} />
+      <div className="relative z-10 px-6 w-full flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="glass rounded-3xl p-8 md:p-10 max-w-2xl w-full text-center"
+        >
+          <p className="tracking-luxury text-[11px] uppercase text-white/80">
+            Together with their families,
+          </p>
+
+          <div className="mt-8 space-y-4">
+            <p className="font-script text-champagne text-2xl sm:text-3xl md:text-4xl leading-snug">
+              Boutrous Touma<span className="mx-3 text-white">&amp;</span> Wafaa Jarjour
+            </p>
+            <div className="mx-auto h-px w-24 bg-white/30" />
+            <p className="font-script text-champagne text-2xl sm:text-3xl md:text-4xl leading-snug mt-2">
+              Robert El Hajj<span className="mx-3 text-white">&amp;</span> Gisele El Alam
+            </p>
+          </div>
+
+          <div className="mx-auto my-7 h-px w-24 bg-champagne/70" />
+
+          <p className="text-white/90 font-serif text-sm md:text-base leading-relaxed">
+            joyfully invite you to celebrate their wedding day
+          </p>
+
+          <p className="mt-7 text-white/85 font-serif italic text-sm md:text-base leading-relaxed">
+            “And now these three remain: faith, hope and love. But the greatest of these is love.” <br /> - 1 Corinthians 13:13
+          </p>
+        </motion.div>
+      </div>
     </div>
   );
 }
-
 
 function Slide4Gallery() {
   const polaroids = [
@@ -356,7 +373,10 @@ function Slide4Gallery() {
           >
             <div
               className="aspect-[3/4] w-full bg-cover bg-center"
-              style={{ backgroundImage: `url(${p.src})` }}
+              style={{
+                backgroundImage: `url(${p.src})`,
+                filter: "brightness(1.08) saturate(1.04)",
+              }}
             />
             <div className="text-center text-black/70 font-hand text-xs absolute bottom-3 left-0 right-0">
               M &amp; C
@@ -420,20 +440,62 @@ function GlassEventCard({
   );
 }
 
-function Slide5Ceremony() {
+function Slide5BeforeCeremony() {
   return (
     <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
       <BackgroundSlideshow
         photos={[PHOTOS[4], PHOTOS[0]]}
         interval={7000}
-        
+      />
+      <div className="relative z-10 px-6 w-full flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true }}
+          className="glass rounded-3xl p-8 md:p-10 max-w-md w-full text-center"
+        >
+          <div className="flex items-center justify-center gap-2 text-champagne mb-3">
+            <Heart size={14} />
+            <span className="tracking-luxury text-[11px] uppercase">Before the Ceremony</span>
+          </div>
+          <h3 className="font-script text-white text-5xl md:text-6xl">Let&apos;s start together</h3>
+          <div className="mx-auto h-px w-16 bg-champagne my-5" />
+          <div className="space-y-3 text-white/90">
+            <p className="text-sm md:text-base font-serif leading-relaxed">
+              We will be delighted to welcome you
+            </p>
+            <div className="flex items-center justify-center gap-2 text-sm tracking-elegant text-white">
+              <Clock size={14} className="text-champagne" /> Starting 4:00 pm
+            </div>
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Hotel"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 mt-2 px-6 py-3 rounded-full border border-champagne/60 text-champagne text-xs tracking-luxury uppercase hover:bg-champagne hover:text-black transition-colors"
+            >
+              Hotel <ArrowRight size={14} />
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function Slide6Ceremony() {
+  return (
+    <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
+      <BackgroundSlideshow
+        photos={[PHOTOS[4], PHOTOS[0]]}
+        interval={7000}
       />
       <div className="relative z-10 px-6 w-full flex justify-center">
         <GlassEventCard
           kicker="The Ceremony"
           title="Vows"
           date="Monday, July 23, 2026"
-          time="18:00 — 19:00"
+          time="6:00 pm — 7:00 pm"
           venue="Hemlaya"
           city="Lebanon"
           mapsUrl="https://maps.app.goo.gl/6ggKA5orbpzdngGe6"
@@ -444,7 +506,7 @@ function Slide5Ceremony() {
   );
 }
 
-function Slide6Reception() {
+function Slide7Reception() {
   return (
     <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
       <BackgroundSlideshow
@@ -457,7 +519,7 @@ function Slide6Reception() {
           kicker="The Celebration"
           title="Reception"
           date="Monday, July 23, 2026"
-          time="19:30 onwards"
+          time="7:30 pm onwards"
           venue="Blanc De Chêne"
           city="Lebanon"
           mapsQuery="Blanc De Chene Lebanon"
@@ -603,12 +665,15 @@ function Slide9Message() {
           From us, to you
         </p>
         <h2 className="font-script text-champagne text-5xl md:text-6xl mt-2 mb-6">
-          A Little Note
+          A Loving Note
         </h2>
         <p className="font-hand text-white text-2xl md:text-3xl leading-snug">
-          To share this day with you would mean the world to us. <br />
-          Bring your laughter, your love, your dancing shoes — <br />
-          and let&rsquo;s make a memory we&rsquo;ll keep forever.
+          Today marks the beginning of a new chapter,
+and it would not be complete without you. <br />
+          Thank you for sharing in our joy,
+our love, and the promise of forever.
+ <br />
+          We look forward to celebrating this unforgettable day together.
         </p>
         <p className="font-hand text-champagne text-2xl mt-8">
           — Maroun &amp; Cynthia
@@ -935,43 +1000,53 @@ function App() {
 
   // PRELOAD EVERYTHING
   useEffect(() => {
-    async function preloadAssets() {
-      const imagePromises = PHOTOS.map((src) => {
-        return new Promise((resolve) => {
-          const img = new Image();
+    let cancelled = false;
 
-          img.onload = resolve;
-          img.onerror = resolve;
+    const finishPreload = () => {
+      if (!cancelled) {
+        setAssetsLoaded(true);
+        setReadyToEnter(true);
+      }
+    };
 
-          img.src = src;
-        });
+    const imagePromises = PHOTOS.map((src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+
+        img.onload = resolve;
+        img.onerror = resolve;
+        img.src = src;
       });
+    });
 
-      const audioPromise = new Promise((resolve) => {
-        if (!audioRef.current) {
-          resolve();
-          return;
-        }
+    const audioPromise = new Promise((resolve) => {
+      if (!audioRef.current) {
+        resolve();
+        return;
+      }
 
-        audioRef.current.addEventListener(
-          "loadeddata",
-          () => resolve(),
-          { once: true }
-        );
+      audioRef.current.addEventListener(
+        "loadeddata",
+        () => resolve(),
+        { once: true }
+      );
 
-        audioRef.current.load();
-      });
+      audioRef.current.load();
+    });
 
-      await Promise.all([
-        ...imagePromises,
-        audioPromise,
-      ]);
+    const fallbackTimer = window.setTimeout(finishPreload, 1800);
 
-      setAssetsLoaded(true);
-      setReadyToEnter(true);
-    }
+    Promise.allSettled([...imagePromises, audioPromise]).finally(() => {
+      if (!cancelled) {
+        window.clearTimeout(fallbackTimer);
+        finishPreload();
+      }
+    });
 
-    preloadAssets();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(fallbackTimer);
+    };
   }, []);
 
   // Music control
@@ -989,12 +1064,13 @@ function App() {
   const slides = useMemo(
     () => [
       <Slide1Hero key="s1" />,
-      <Slide2Countdown key="s2" />,
-      <Slide4Gallery key="s4" />,
-      <Slide5Ceremony key="s5" />,
-      <Slide6Reception key="s6" />,
+      <Slide2Invitation key="s2" />,
+      <Slide5BeforeCeremony key="s5" />,
+      <Slide6Ceremony key="s6" />,
+      <Slide7Reception key="s7" />,
       <Slide8Gift key="s8" />,
       <Slide9Message key="s9" />,
+      <Slide4Gallery key="s4" />,
       <SlideRSVP
         key="s10"
         guests={guests}
