@@ -901,6 +901,18 @@ function SlideRSVP({ guests, setGuests }) {
             <SuccessCelebration guests={guests} />
           )}
         </AnimatePresence>
+
+        <div className="mt-8 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.28em] text-white/70">
+          <span>Made with love</span>
+          <Heart size={14} className="text-champagne fill-champagne" />
+          <span>by</span>
+          <a
+            href="mailto:hazzouri.chris@gmail.com"
+            className="text-champagne transition-colors hover:text-champagne/80"
+          >
+            Chris
+          </a>
+        </div>
       </div>
     </div>
   );
