@@ -46,7 +46,7 @@ const WEDDING_DATE = new Date("2026-07-23T15:00:00+03:00");
 function BackgroundSlideshow({
   photos = PHOTOS,
   interval = 4000,
-  overlay = "rgba(0,0,0,0.45)",
+  
 }) {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
@@ -269,7 +269,7 @@ function Slide2Countdown() {
       <BackgroundSlideshow
         photos={[PHOTOS[1], PHOTOS[3]]}
         interval={6000}
-        overlay="rgba(0,0,0,0.55)"
+       
       />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -311,82 +311,6 @@ function Slide2Countdown() {
   );
 }
 
-function Slide3Story() {
-  const milestones = [
-    {
-      year: "2019",
-      title: "First Glance",
-      text: "Two strangers, one unforgettable evening.",
-    },
-    {
-      year: "2021",
-      title: "First Trip",
-      text: "Sunsets, laughter, and a quiet certainty.",
-    },
-    {
-      year: "2023",
-      title: "The Promise",
-      text: "A ring, a yes, and a future taking shape.",
-    },
-    { year: "2026", title: "Forever", text: "The day our story becomes one." },
-  ];
-  return (
-    <div className="relative h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar">
-      <BackgroundSlideshow
-        photos={[PHOTOS[2]]}
-        interval={9999}
-        overlay="rgba(0,0,0,0.7)"
-      />
-      <div className="relative z-10 min-h-full flex flex-col items-center justify-center py-20 px-6">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="tracking-luxury text-white/80 text-[11px] uppercase"
-        >
-          Our Story
-        </motion.p>
-        <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="font-script text-champagne text-5xl md:text-7xl mt-2 mb-12"
-        >
-          How it began
-        </motion.h2>
-
-        <div className="relative max-w-md w-full">
-          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-champagne/50 to-transparent" />
-          {milestones.map((m, i) => (
-            <motion.div
-              key={m.year}
-              initial={{ opacity: 0, x: i % 2 ? 30 : -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: i * 0.15 }}
-              viewport={{ once: true, amount: 0.3 }}
-              className={`relative flex ${i % 2 ? "justify-end" : "justify-start"} mb-10`}
-            >
-              <div
-                className={`w-[46%] glass rounded-xl p-4 ${i % 2 ? "text-left" : "text-right"}`}
-              >
-                <div className="text-champagne text-xs tracking-luxury">
-                  {m.year}
-                </div>
-                <div className="font-serif text-white text-lg mt-1">
-                  {m.title}
-                </div>
-                <div className="text-white/75 text-xs mt-1 leading-relaxed">
-                  {m.text}
-                </div>
-              </div>
-              <div className="absolute left-1/2 top-4 -translate-x-1/2 w-3 h-3 rounded-full bg-champagne shadow-[0_0_20px_rgba(212,184,150,0.8)]" />
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Slide4Gallery() {
   const polaroids = [
@@ -502,7 +426,7 @@ function Slide5Ceremony() {
       <BackgroundSlideshow
         photos={[PHOTOS[4], PHOTOS[0]]}
         interval={7000}
-        overlay="rgba(0,0,0,0.6)"
+        
       />
       <div className="relative z-10 px-6 w-full flex justify-center">
         <GlassEventCard
@@ -526,7 +450,7 @@ function Slide6Reception() {
       <BackgroundSlideshow
         photos={[PHOTOS[5], PHOTOS[3]]}
         interval={7000}
-        overlay="rgba(0,0,0,0.62)"
+
       />
       <div className="relative z-10 px-6 w-full flex justify-center">
         <GlassEventCard
@@ -587,7 +511,7 @@ function Slide8Gift() {
       <BackgroundSlideshow
         photos={[PHOTOS[1]]}
         interval={9999}
-        overlay="rgba(0,0,0,0.7)"
+        
       />
       <div className="relative z-10 px-6 max-w-md w-full text-center">
         <p className="tracking-luxury text-white/80 text-[11px] uppercase">
@@ -666,7 +590,7 @@ function Slide9Message() {
       <BackgroundSlideshow
         photos={[PHOTOS[3], PHOTOS[5]]}
         interval={8000}
-        overlay="rgba(0,0,0,0.65)"
+        
       />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -808,7 +732,7 @@ function SlideRSVP({ guests, setGuests }) {
       <BackgroundSlideshow
         photos={[PHOTOS[0], PHOTOS[4]]}
         interval={8000}
-        overlay="rgba(0,0,0,0.7)"
+        
       />
 
       <div className="relative z-10 min-h-full flex flex-col items-center justify-center py-20 px-6">
@@ -1066,7 +990,6 @@ function App() {
     () => [
       <Slide1Hero key="s1" />,
       <Slide2Countdown key="s2" />,
-      <Slide3Story key="s3" />,
       <Slide4Gallery key="s4" />,
       <Slide5Ceremony key="s5" />,
       <Slide6Reception key="s6" />,
